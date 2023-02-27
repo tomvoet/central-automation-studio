@@ -291,6 +291,22 @@ function loadMonitoringData(refreshrate) {
 			clients = clients.concat(wirelessClients);
 			clients = clients.concat(wiredClients);
 
+			//table.row.add([client_mac === 'Unknown' ? client_name : '<a href="' + clientURL + '" target="_blank"><strong>' + client_name + '</strong></a>', status, client_mac, ip_address, os_type, associatedDevice_name, site, `<strong onclick="setVlan(${client_mac})" style="cursor: pointer;">${vlan}</strong>`]);
+			//add fields from statement above
+			clients = [{
+				"client_mac": "00:00:00:00:00:00",
+				"client_name": "Unknown",
+				"ip_address": "0.0.0.0",
+				"os_type": "Unknown",
+				"associatedDevice_name": "Unknown",
+				"site": "Unknown",
+				"vlan": "Unknown",
+				"status": "Unknown",
+				"clientURL": "Unknown"
+			}]
+
+			console.log(clients)
+
 			$.each(clients, function() {
 				loadClientsUI(this);
 			});
@@ -1132,12 +1148,16 @@ function loadClientsUI(client) {
 
 	// Add row to table
 	var table = $('#client-table').DataTable();
-	table.row.add([client_mac === 'Unknown' ? client_name : '<a href="' + clientURL + '" target="_blank"><strong>' + client_name + '</strong></a>', status, client_mac, ip_address, os_type, associatedDevice_name, site, vlan]);
+	table.row.add([client_mac === 'Unknown' ? client_name : '<a href="' + clientURL + '" target="_blank"><strong>' + client_name + '</strong></a>', status, client_mac, ip_address, os_type, associatedDevice_name, site, `<strong onclick="setVlan(${client_mac})" style="cursor: pointer;">${vlan}</strong>`]);
 
 	var universalTable = $('#universal-table').DataTable();
 	universalTable.row.add(['Client', client_mac === 'Unknown' ? client_name : '<a href="' + clientURL + '" target="_blank"><strong>' + client_name + '</strong></a>', status, ip_address, client_mac, site, '', os_type, vlan, '', '', '']);
 
 	$('[data-toggle="tooltip"]').tooltip();
+}
+
+function setVlan(client_mac) {
+	console.log(client_mac);
 }
 
 function updateClientUI() {
